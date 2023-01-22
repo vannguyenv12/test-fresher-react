@@ -8,9 +8,13 @@ const TableUsers = () => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  // const [page, setPage] = useState(0);
 
   const handlePageClick = (event) => {
     getUsers(+event.selected + 1);
+    console.log(event.selected + 1);
+    // setPage(+event.selected + 1);
+    // console.log(page);
   };
 
   const getUsers = async (page) => {
