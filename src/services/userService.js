@@ -1,5 +1,5 @@
 import axios from "./axiosCustomize";
 
-export const fetchAllUsers = () => {
-  return axios.get("/users?page=1");
+export const fetchAllUsers = (page) => {
+  return axios.get(`/users?page=${page}`);
 };
