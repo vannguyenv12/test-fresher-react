@@ -1,28 +1,54 @@
+import { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { UserContext } from "../context/UserContext";
 
 const Header = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, user } = useContext(UserContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    toast.success("Logout success");
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Navbar.Brand href="#home">Van Nguyen</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
+          <Nav className="me-auto" activeKey={location.pathname}>
+            <NavLink to="/" className="nav-link">
+              Home
+            </NavLink>
+            <NavLink to="/users" className="nav-link">
+              Manage Users
+            </NavLink>
+          </Nav>
+          <Nav>
+            {user && user.email && (
+              <span className="nav-link">Welcome {user.email}</span>
+            )}
+            <NavDropdown title="Settings" id="basic-nav-dropdown">
+              {user && user.auth ? (
+                <NavDropdown.Item
+                  onClick={handleLogout}
+                  className="dropdown-item"
+                >
+                  Logout
+                </NavDropdown.Item>
+              ) : (
+                <NavLink to="/login" className="dropdown-item">
+                  Login
+                </NavLink>
+              )}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
